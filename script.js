@@ -5,7 +5,10 @@ if (yearNode) yearNode.textContent = String(new Date().getFullYear());
 const modeToggleBtn = document.getElementById('mode-toggle');
 const root = document.documentElement;
 
+root.classList.add('night-mode');
 if (modeToggleBtn) {
+  modeToggleBtn.textContent = 'Day Mode';
+  modeToggleBtn.setAttribute('aria-pressed', 'true');
   modeToggleBtn.addEventListener('click', () => {
     const nightEnabled = root.classList.toggle('night-mode');
     modeToggleBtn.textContent = nightEnabled ? 'Day Mode' : 'Night Mode';
