@@ -78,7 +78,7 @@ h2, h3 { margin-top: 0; }
 
 .tool-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(210px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: .75rem;
 }
 
@@ -87,25 +87,27 @@ h2, h3 { margin-top: 0; }
   border-radius: 10px;
   padding: .9rem;
   background: #fdfefe;
+  min-width: 0;
 }
 
 
 .status-ribbon {
   position: relative;
   overflow: hidden;
+  padding-top: 1.9rem;
 }
 
 .status-ribbon::after {
   position: absolute;
-  right: -44px;
-  bottom: 18px;
-  transform: rotate(-45deg);
+  top: .55rem;
+  right: .55rem;
   color: #fff;
-  font-size: .72rem;
+  font-size: .68rem;
   font-weight: 700;
   letter-spacing: .02em;
   text-transform: uppercase;
-  padding: .2rem 3.2rem;
+  padding: .18rem .5rem;
+  border-radius: 999px;
   pointer-events: none;
 }
 
@@ -149,7 +151,7 @@ h2, h3 { margin-top: 0; }
 
 @media (max-width: 1200px) {
   .card-grid { grid-template-columns: repeat(2, minmax(260px, 1fr)); }
-  .tool-grid { grid-template-columns: repeat(2, minmax(210px, 1fr)); }
+  .tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 900px) {
