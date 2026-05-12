@@ -104,7 +104,7 @@ h2, h3 { margin-top: 0; }
 }
 
 .status-ribbon-wip::after {
-  content: "Work in Progress";
+  content: "WIP";
   background: #c62828;
 }
 
