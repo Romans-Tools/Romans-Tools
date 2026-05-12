@@ -10,7 +10,10 @@
   <body>
     <header class="site-header">
       <div class="container">
-        <h1>Roman's Toolbox</h1>
+        <div class="header-top">
+          <h1>Roman's Toolbox</h1>
+          <button class="mode-toggle-btn" id="mode-toggle" type="button" aria-pressed="false">Night Mode</button>
+        </div>
         <p class="subtitle">
           A launch pad for personal generators, templates, utilities, and assorted projects built for productivity,
           experimentation, and occasional entertainment.
@@ -38,10 +41,13 @@
 
         <div class="card-grid">
           <article class="card" id="tools">
-            <h2>Available Tools</h2>
-            <p>These are tools I made, or working on with other people, because I wanted a better way to do something.</p>
-
-            <div class="tool-grid">
+            <div class="section-header">
+              <h2>Available Tools</h2>
+              <button class="section-toggle-btn" type="button" data-toggle-target="tools-content" aria-expanded="true">Collapse</button>
+            </div>
+            <div id="tools-content" class="toggle-content">
+              <p>These are tools I made, or working on with other people, because I wanted a better way to do something.</p>
+              <div class="tool-grid">
               <section class="tool-tile">
                 <h3>SitRep Generator</h3>
                 <p>Create structured situation reports for operations and incident updates. This creates a ready-to-submit version of the nightly SitRep to leadership during major activities</p>
@@ -114,14 +120,18 @@
                 </a>
               </section>
 
+              </div>
             </div>
           </article>
 
           <article class="card" id="in-development">
-            <h2>In Development</h2>
-            <p>These tools are actively being built, tested, or refined before wider release, so features and behavior may change as improvements are made.</p>
-
-            <div class="tool-grid">
+            <div class="section-header">
+              <h2>In Development</h2>
+              <button class="section-toggle-btn" type="button" data-toggle-target="in-development-content" aria-expanded="true">Collapse</button>
+            </div>
+            <div id="in-development-content" class="toggle-content">
+              <p>These tools are actively being built, tested, or refined before wider release, so features and behavior may change as improvements are made.</p>
+              <div class="tool-grid">
               <section class="tool-tile status-ribbon status-ribbon-beta">
                 <h3>CAP Certificate Generator</h3>
                 <p>Generate Civil Air Patrol certificates quickly with a streamlined guided form. This is a working concept and not fully released to membership just yet.</p>
@@ -178,14 +188,18 @@
                 </a>
               </section>
 
+              </div>
             </div>
           </article>
 
           <article class="card" id="entertainment">
-            <h2>Entertainment</h2>
-            <p>These are just things I made because I thought they were funny.</p>
-
-            <div class="tool-grid">
+            <div class="section-header">
+              <h2>Entertainment</h2>
+              <button class="section-toggle-btn" type="button" data-toggle-target="entertainment-content" aria-expanded="true">Collapse</button>
+            </div>
+            <div id="entertainment-content" class="toggle-content">
+              <p>These are just things I made because I thought they were funny.</p>
+              <div class="tool-grid">
               <section class="tool-tile">
                 <h3>CAP Decision Maker</h3>
                 <p>Interactive decision support tool for Civil Air Patrol scenarios and workflows.</p>
@@ -271,6 +285,7 @@
                   Open Tool
                 </a>
               </section>
+              </div>
             </div>
           </article>
         </div>
