@@ -16,17 +16,54 @@ if (modeToggleBtn) {
   });
 }
 
-const sectionButtons = document.querySelectorAll('.section-toggle-btn');
-sectionButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    const targetId = button.getAttribute('data-toggle-target');
-    if (!targetId) return;
-    const target = document.getElementById(targetId);
-    if (!target) return;
+const SECTION_STATE_STORAGE_KEY = 'roman-toolbox-section-state';
 
+const loadSectionState = () => {
+  try {
+    const raw = localStorage.getItem(SECTION_STATE_STORAGE_KEY);
+    if (!raw) return {};
+
+    const parsed = JSON.parse(raw);
+    return typeof parsed === 'object' && parsed !== null ? parsed : {};
+  } catch {
+    return {};
+  }
+};
+
+const saveSectionState = (state) => {
+  try {
+    localStorage.setItem(SECTION_STATE_STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // Ignore storage write errors to avoid breaking UI interactions.
+  }
+};
+
+const sectionState = loadSectionState();
+const sectionButtons = document.querySelectorAll('.section-toggle-btn');
+
+sectionButtons.forEach((button) => {
+  const targetId = button.getAttribute('data-toggle-target');
+  if (!targetId) return;
+
+  const target = document.getElementById(targetId);
+  if (!target) return;
+
+  const savedExpanded = sectionState[targetId];
+  if (typeof savedExpanded === 'boolean') {
+    button.setAttribute('aria-expanded', String(savedExpanded));
+    button.textContent = savedExpanded ? 'Collapse' : 'Expand';
+    target.hidden = !savedExpanded;
+  }
+
+  button.addEventListener('click', () => {
     const expanded = button.getAttribute('aria-expanded') === 'true';
-    button.setAttribute('aria-expanded', String(!expanded));
-    button.textContent = expanded ? 'Expand' : 'Collapse';
-    target.hidden = expanded;
+    const nextExpanded = !expanded;
+
+    button.setAttribute('aria-expanded', String(nextExpanded));
+    button.textContent = nextExpanded ? 'Collapse' : 'Expand';
+    target.hidden = !nextExpanded;
+
+    sectionState[targetId] = nextExpanded;
+    saveSectionState(sectionState);
   });
 });
