@@ -60,6 +60,16 @@ main.container {
 
 h2, h3 { margin-top: 0; }
 
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.card-grid .card {
+  margin-bottom: 0;
+}
+
 .tool-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(230px, 1fr));
@@ -102,5 +112,6 @@ h2, h3 { margin-top: 0; }
 }
 
 @media (max-width: 900px) {
+  .card-grid { grid-template-columns: 1fr; }
   .tool-grid { grid-template-columns: 1fr; }
 }
