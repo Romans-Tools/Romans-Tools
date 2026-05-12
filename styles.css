@@ -83,6 +83,36 @@ h2, h3 { margin-top: 0; }
   background: #fdfefe;
 }
 
+
+.status-ribbon {
+  position: relative;
+  overflow: hidden;
+}
+
+.status-ribbon::after {
+  position: absolute;
+  right: -44px;
+  bottom: 18px;
+  transform: rotate(-45deg);
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  padding: .2rem 3.2rem;
+  pointer-events: none;
+}
+
+.status-ribbon-wip::after {
+  content: "Work in Progress";
+  background: #c62828;
+}
+
+.status-ribbon-beta::after {
+  content: "Beta";
+  background: var(--blue-600);
+}
+
 .tool-tile p {
   margin: .45rem 0 .75rem;
   color: var(--muted);
