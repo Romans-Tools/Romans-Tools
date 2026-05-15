@@ -39,6 +39,21 @@
           </ul>
         </article>
 
+        <article class="card" id="status-filter-section">
+          <h2>Status Filter</h2>
+          <p>Filter all tools across every section by development status.</p>
+          <div class="status-filter" role="group" aria-label="Filter tools by development status">
+            <label for="status-filter-select">Filter by status</label>
+            <select id="status-filter-select">
+              <option value="all">All statuses</option>
+              <option value="none">Fully developed (No Banner)</option>
+              <option value="deprecated">No Longer doing updates (Deprecated)</option>
+              <option value="beta">Unofficial tools (BETA)</option>
+              <option value="wip">Work in Progress (WIP)</option>
+            </select>
+          </div>
+        </article>
+
         <div class="card-grid">
           <article class="card" id="tools">
             <div class="section-header">
@@ -48,7 +63,7 @@
             <div id="tools-content" class="toggle-content" hidden>
               <p>These are tools I made, or working on with other people, because I wanted a better way to do something.</p>
               <div class="tool-grid">
-              <section class="tool-tile">
+              <section class="tool-tile" data-status="none">
                 <h3>SitRep Generator</h3>
                 <p>Create structured situation reports for operations and incident updates. This creates a ready-to-submit version of the nightly SitRep to leadership during major activities</p>
                 <a
@@ -62,7 +77,7 @@
                 </a>
               </section>
 
-              <section class="tool-tile">
+              <section class="tool-tile" data-status="none">
                 <h3>Crew Watch</h3>
                 <p>Track and monitor Civil Air Patrol crew status, staff assignments, and availability with a simple, mission-ready dashboard. This does not replace WMIRS and is best used as a status board for people needing a quick update.</p>
                 <a
@@ -77,7 +92,7 @@
               </section>
 
 
-              <section class="tool-tile status-ribbon status-ribbon-deprecated">
+              <section class="tool-tile status-ribbon status-ribbon-deprecated" data-status="deprecated">
                 <h3>Staff Watch</h3>
                 <p>This is a standalone version of Staff Watch, separate from Crew Watch, before I integrated it into one. This version may be out of date</p>
                 <a
@@ -92,7 +107,7 @@
               </section>
 
 
-              <section class="tool-tile">
+              <section class="tool-tile" data-status="none">
                 <h3>Aviation Weather Decoder</h3>
                 <p>Decode aviation weather reports into plain language for faster flight planning and briefings.</p>
                 <a
@@ -108,7 +123,7 @@
 
 
 
-              <section class="tool-tile">
+              <section class="tool-tile" data-status="none">
                 <h3>Training Scenario Builder</h3>
                 <p>Build and run structured training scenarios with guided prompts to support planning, facilitation, and after-action review.</p>
                 <a
@@ -122,7 +137,7 @@
                 </a>
               </section>
 
-              <section class="tool-tile">
+              <section class="tool-tile" data-status="none">
                 <h3>CAP Brand Tools</h3>
                 <p>Access brand-focused resources and tools for Civil Air Patrol creative and identity work.</p>
                 <a
@@ -147,8 +162,8 @@
             </div>
             <div id="in-development-content" class="toggle-content" hidden>
               <p>These tools are actively being built, tested, or refined before wider release, so features and behavior may change as improvements are made.</p>
-              <div class="tool-grid">
-              <section class="tool-tile status-ribbon status-ribbon-beta">
+              <div class="tool-grid" id="in-development-tools">
+              <section class="tool-tile status-ribbon status-ribbon-beta" data-status="beta">
                 <h3>CAP Certificate Generator</h3>
                 <p>Generate Civil Air Patrol certificates quickly with a streamlined guided form. This is a working concept and not fully released to membership just yet.</p>
                 <a
@@ -162,7 +177,7 @@
                 </a>
               </section>
 
-              <section class="tool-tile status-ribbon status-ribbon-bunge">
+              <section class="tool-tile status-ribbon status-ribbon-bunge" data-status="none">
                 <h3>Readiness Hub</h3>
                 <p>Centralized readiness resources and tools to support planning, tracking, and operational preparation.</p>
                 <a
@@ -176,7 +191,7 @@
                 </a>
               </section>
 
-              <section class="tool-tile status-ribbon status-ribbon-wip">
+              <section class="tool-tile status-ribbon status-ribbon-wip" data-status="wip">
                 <h3>Ribbon Check</h3>
                 <p>Review CAP uniform guidance quickly with a simple, dedicated reference tool.</p>
                 <a
@@ -191,7 +206,7 @@
               </section>
 
 
-              <section class="tool-tile status-ribbon status-ribbon-wip">
+              <section class="tool-tile status-ribbon status-ribbon-wip" data-status="wip">
                 <h3>CAP Photo Meta Data Writer</h3>
                 <p>Write and manage metadata for CAP photos to support consistent archiving, attribution, and publication workflows.</p>
                 <a
@@ -206,7 +221,7 @@
               </section>
 
 
-              <section class="tool-tile status-ribbon status-ribbon-wip">
+              <section class="tool-tile status-ribbon status-ribbon-wip" data-status="wip">
                 <h3>Bulk File Renamer</h3>
                 <p>Batch rename files quickly with configurable patterns for consistent naming across large folders.</p>
                 <a
@@ -220,7 +235,7 @@
                 </a>
               </section>
 
-              <section class="tool-tile status-ribbon status-ribbon-wip-beta">
+              <section class="tool-tile status-ribbon status-ribbon-wip" data-status="wip">
                 <h3>CAP Emblem Generator</h3>
                 <p>Create and customize CAP emblem graphics with an in-browser toolset while feature work is still underway.</p>
                 <a
@@ -234,7 +249,7 @@
                 </a>
               </section>
 
-              <section class="tool-tile status-ribbon status-ribbon-wip">
+              <section class="tool-tile status-ribbon status-ribbon-wip" data-status="wip">
                 <h3>Organizational Chart Generator</h3>
                 <p>Build and customize CAP-style organizational charts quickly for briefings, planning, and team structure visualization.</p>
                 <a
@@ -260,7 +275,7 @@
             <div id="entertainment-content" class="toggle-content" hidden>
               <p>These are just things I made because I thought they were funny.</p>
               <div class="tool-grid">
-              <section class="tool-tile">
+              <section class="tool-tile" data-status="none">
                 <h3>CAP Decision Maker</h3>
                 <p>Interactive decision support tool for Civil Air Patrol scenarios and workflows.</p>
                 <a
@@ -274,7 +289,7 @@
                 </a>
               </section>
 
-              <section class="tool-tile">
+              <section class="tool-tile" data-status="none">
                 <h3>Operations Status Board</h3>
                 <p>Operational awareness dashboard and status display utility.</p>
                 <a
@@ -288,7 +303,7 @@
                 </a>
               </section>
 
-              <section class="tool-tile">
+              <section class="tool-tile" data-status="none">
                 <h3>Who Is My Flight Release Officer?</h3>
                 <p>Quickly identify Flight Release Officer information for mission planning.</p>
                 <a
@@ -304,7 +319,7 @@
 
 
 
-              <section class="tool-tile">
+              <section class="tool-tile" data-status="none">
                 <h3>CAP Bingo</h3>
                 <p>Bingo-style entertainment game with CAP-themed prompts and challenges.</p>
                 <a
@@ -318,7 +333,7 @@
                 </a>
               </section>
 
-              <section class="tool-tile">
+              <section class="tool-tile" data-status="none">
                 <h3>Mission Generator</h3>
                 <p>Generate fun mission ideas and prompts for Civil Air Patrol themed scenarios.</p>
                 <a
@@ -332,7 +347,7 @@
                 </a>
               </section>
 
-              <section class="tool-tile">
+              <section class="tool-tile" data-status="none">
                 <h3>Impromptu Speeches</h3>
                 <p>Get instant speech prompts for quick practice, creativity, and public speaking drills.</p>
                 <a
