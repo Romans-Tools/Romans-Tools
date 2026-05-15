@@ -213,27 +213,24 @@ h2, h3 { margin-top: 0; }
 .status-ribbon-wip-beta::after {
   content: "Beta";
   background: var(--blue-600);
-  right: .55rem;
+  right: -2.2rem;
+  bottom: 2.05rem;
   left: auto;
-  top: .45rem;
-  bottom: auto;
-  width: auto;
-  min-width: 4.4rem;
-  padding: .2rem .55rem;
-  transform: none;
+  transform: rotate(-35deg);
 }
 
 .status-ribbon-wip-beta::before {
   content: "WIP";
   background: #c62828;
-  right: .55rem;
+  right: -2.2rem;
+  bottom: .7rem;
   left: auto;
-  top: 2rem;
-  bottom: auto;
-  width: auto;
-  min-width: 4.4rem;
-  padding: .2rem .55rem;
-  transform: none;
+  transform: rotate(-35deg);
+}
+
+.status-ribbon-bunge::after {
+  content: "Bunge";
+  background: #2e7d32;
 }
 
 .tool-tile p {
