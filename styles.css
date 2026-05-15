@@ -325,15 +325,3 @@ h2, h3 { margin-top: 0; }
   }
 }
 
-.admin-editable { cursor: pointer; }
-
-.admin-dropzone {
-  outline: 2px dashed color-mix(in srgb, var(--blue-600) 55%, transparent);
-  outline-offset: 6px;
-  border-radius: 10px;
-  min-height: 120px;
-}
-
-.tool-tile.is-dragging {
-  opacity: .55;
-}
