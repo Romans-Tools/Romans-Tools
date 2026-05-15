@@ -1,7 +1,3 @@
-// Lightweight helper for year stamp consistency
-const yearNode = document.getElementById('year');
-if (yearNode) yearNode.textContent = String(new Date().getFullYear());
-
 const root = document.documentElement;
 const modeToggleBtn = document.getElementById('mode-toggle');
 const MODE_STORAGE_KEY = 'roman-toolbox-theme-mode';
