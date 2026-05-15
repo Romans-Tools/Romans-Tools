@@ -1,56 +1,74 @@
 # Roman's Toolbox
 
-Roman's Toolbox is a lightweight static website that serves as a launch pad for personal tools, utilities, and experiments.
+Roman's Toolbox is a lightweight static website that acts as a launch pad for personal tools, utilities, and side-project experiments.
 
-## What it includes
+## Features
 
-- **Overview section** describing the toolbox purpose and status labels (WIP / BETA).
-- **Available Tools** section with production-ready tools.
-- **In Development** section for tools still being built and tested.
-- **Entertainment** section for fun side projects.
-- **Night/Day mode toggle** for quick theme switching.
-- **Section expand/collapse controls** with state persistence using `localStorage`.
-- **Admin status/layout sync** persisted through a Netlify Function so edits appear on other devices.
+- **Curated tool sections** for production tools, in-progress work, and entertainment projects.
+- **Night/Day theme toggle** for quick visual switching.
+- **Expandable/collapsible sections** with browser persistence via `localStorage`.
+- **Admin editing mode** for updating card status and ordering.
+- **Cross-device admin sync** through a Netlify Function backed by Netlify Blobs.
 
 ## Project structure
 
 ```text
 .
-├── index.html   # Page content and tool listings
-├── styles.css   # Layout, theming, responsive styling
-├── script.js    # Theme toggle + collapsible section behavior + admin editing/sync
+├── index.html                    # Page markup and tool listings
+├── styles.css                    # Layout, themes, responsive styles
+├── script.js                     # UI interactions and admin sync calls
 ├── netlify/
 │   └── functions/
-│       └── admin-state.js # Shared admin state persistence via Netlify Blobs
+│       └── admin-state.js        # Shared admin state API (GET/PUT)
+├── package.json                  # Node dependencies for Netlify Function runtime
 └── README.md
 ```
 
-## Run locally
+## Local development
 
-Because this is a static site, you can open `index.html` directly in a browser, or serve it with a local HTTP server.
+You can run this project in two ways:
 
-### Option 1: Open directly
+### 1) Static preview only (no shared admin sync)
 
-- Double-click `index.html`.
-
-### Option 2: Use Python HTTP server
+Open `index.html` directly in your browser, or serve the directory with a simple HTTP server:
 
 ```bash
 python3 -m http.server 8080
 ```
 
-Then visit: <http://localhost:8080>
+Then visit <http://localhost:8080>.
+
+> Note: Shared admin sync depends on the Netlify Function endpoint and will not persist across devices in this mode.
+
+### 2) Netlify dev (recommended for full behavior)
+
+Use Netlify CLI so the site and `/.netlify/functions/admin-state` run together:
+
+```bash
+npm install
+npx netlify dev
+```
 
 ## Deployment
 
-This project can be deployed to any static host (for example Netlify, GitHub Pages, or Cloudflare Pages).
+Deploy to any static host for basic site functionality. For cross-device admin sync, deploy on **Netlify** with Functions enabled.
 
-### Netlify shared admin state
+### Admin state API
 
-To sync admin card changes across devices, deploy on Netlify with Functions enabled. The endpoint `/.netlify/functions/admin-state` stores shared admin status/layout in Netlify Blobs.
+The function `/.netlify/functions/admin-state` supports:
+
+- `GET` → returns saved admin state or defaults:
+  - `{ "statuses": {}, "layout": {} }`
+- `PUT` → saves state payload:
+  - `{ "statuses": { ... }, "layout": { ... } }`
+
+State is stored in a Netlify Blobs store:
+
+- Store name: `roman-toolbox`
+- Key: `admin-state`
 
 ## Notes
 
 - The page defaults to **night mode** on load.
-- Expand/collapse state is saved in browser storage using the key:
+- Section open/closed state is stored in browser local storage under:
   - `roman-toolbox-section-state`
