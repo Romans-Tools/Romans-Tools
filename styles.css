@@ -135,6 +135,27 @@ h2, h3 { margin-top: 0; }
 }
 
 
+
+.status-filter {
+  margin-bottom: .9rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+}
+
+.status-filter label {
+  font-weight: 600;
+}
+
+.status-filter select {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--text);
+  padding: .45rem .6rem;
+}
+
 .tool-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

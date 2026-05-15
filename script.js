@@ -67,3 +67,21 @@ sectionButtons.forEach((button) => {
     saveSectionState(sectionState);
   });
 });
+
+const statusFilterSelect = document.getElementById('status-filter-select');
+const inDevelopmentTools = document.querySelectorAll('#in-development-tools .tool-tile');
+
+if (statusFilterSelect && inDevelopmentTools.length) {
+  const applyStatusFilter = () => {
+    const selectedStatus = statusFilterSelect.value;
+
+    inDevelopmentTools.forEach((tool) => {
+      const toolStatus = tool.dataset.status || 'none';
+      const shouldShow = selectedStatus === 'all' || toolStatus === selectedStatus;
+      tool.hidden = !shouldShow;
+    });
+  };
+
+  statusFilterSelect.addEventListener('change', applyStatusFilter);
+  applyStatusFilter();
+}
