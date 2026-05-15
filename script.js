@@ -88,6 +88,7 @@ if (statusFilterSelect && allToolTiles.length) {
 
 
 const adminToggleBtn = document.getElementById('admin-toggle');
+const adminResetBtn = document.getElementById('admin-reset');
 const ADMIN_CODE = '205483';
 const ADMIN_STATUS_STORAGE_KEY = 'roman-toolbox-admin-statuses';
 const ADMIN_LAYOUT_STORAGE_KEY = 'roman-toolbox-admin-layout';
@@ -114,6 +115,29 @@ const ensureTileIds = () => {
       tile.dataset.toolId = title ? slugify(title) : `tool-${index + 1}`;
     }
   });
+};
+
+const captureLayoutStateFromDom = () => {
+  const layoutState = {};
+  document.querySelectorAll('.card[id]').forEach((card) => {
+    const grid = card.querySelector('.tool-grid');
+    if (!grid) return;
+
+    const tileIds = Array.from(grid.querySelectorAll('.tool-tile'))
+      .map((tile) => tile.dataset.toolId)
+      .filter(Boolean);
+    layoutState[card.id] = tileIds;
+  });
+  return layoutState;
+};
+
+const captureStatusStateFromDom = () => {
+  const statusState = {};
+  allToolTiles.forEach((tile, index) => {
+    const storageKey = tile.dataset.toolId || String(index);
+    statusState[storageKey] = tile.dataset.status || 'none';
+  });
+  return statusState;
 };
 
 const applyAdminStatus = (tile, status) => {
@@ -203,9 +227,8 @@ const saveAdminLayout = (layoutState) => {
   }
 };
 
-const restoreAdminLayout = () => {
-  const layoutState = loadAdminLayout();
-  const sectionIds = Object.keys(layoutState);
+const applyLayoutState = (layoutState) => {
+  const sectionIds = Object.keys(layoutState || {});
 
   sectionIds.forEach((sectionId) => {
     const grid = document.querySelector(`#${sectionId} .tool-grid`);
@@ -217,6 +240,11 @@ const restoreAdminLayout = () => {
       if (tile) grid.appendChild(tile);
     });
   });
+};
+
+const restoreAdminLayout = () => {
+  const layoutState = loadAdminLayout();
+  applyLayoutState(layoutState);
 };
 
 const persistAdminLayout = () => {
@@ -252,6 +280,8 @@ const handleGridDrop = (event) => {
 
 const toolStatusState = loadAdminStatuses();
 ensureTileIds();
+const defaultToolStatusState = captureStatusStateFromDom();
+const defaultLayoutState = captureLayoutStateFromDom();
 restoreAdminLayout();
 
 allToolTiles.forEach((tile, index) => {
@@ -265,6 +295,7 @@ allToolTiles.forEach((tile, index) => {
 const enableAdminMode = () => {
   adminEnabled = true;
   if (adminToggleBtn) adminToggleBtn.setAttribute('aria-pressed', 'true');
+  if (adminResetBtn) adminResetBtn.hidden = false;
 
   allToolTiles.forEach((tile) => {
     tile.classList.add('admin-editable');
@@ -285,6 +316,7 @@ const enableAdminMode = () => {
 const disableAdminMode = () => {
   adminEnabled = false;
   if (adminToggleBtn) adminToggleBtn.setAttribute('aria-pressed', 'false');
+  if (adminResetBtn) adminResetBtn.hidden = true;
 
   allToolTiles.forEach((tile) => {
     tile.classList.remove('admin-editable');
@@ -369,6 +401,29 @@ if (adminToggleBtn) {
     } else if (enteredCode !== null) {
       window.alert('Incorrect code.');
     }
+  });
+}
+
+if (adminResetBtn) {
+  adminResetBtn.addEventListener('click', () => {
+    if (!adminEnabled) return;
+
+    Object.keys(toolStatusState).forEach((key) => delete toolStatusState[key]);
+    Object.entries(defaultToolStatusState).forEach(([key, status]) => {
+      toolStatusState[key] = status;
+    });
+    saveAdminStatuses(toolStatusState);
+
+    applyLayoutState(defaultLayoutState);
+    saveAdminLayout(defaultLayoutState);
+
+    allToolTiles.forEach((tile, index) => {
+      const storageKey = tile.dataset.toolId || String(index);
+      applyAdminStatus(tile, toolStatusState[storageKey] || 'none');
+    });
+
+    if (statusFilterSelect) statusFilterSelect.dispatchEvent(new Event('change'));
+    void saveRemoteAdminState();
   });
 }
 
