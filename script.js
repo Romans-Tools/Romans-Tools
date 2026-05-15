@@ -91,6 +91,7 @@ const adminToggleBtn = document.getElementById('admin-toggle');
 const ADMIN_CODE = '205483';
 const ADMIN_STATUS_STORAGE_KEY = 'roman-toolbox-admin-statuses';
 const ADMIN_LAYOUT_STORAGE_KEY = 'roman-toolbox-admin-layout';
+const ADMIN_SYNC_ENDPOINT = '/.netlify/functions/admin-state';
 let adminEnabled = false;
 let draggedTile = null;
 let suppressAdminClickUntil = 0;
@@ -152,6 +153,36 @@ const saveAdminStatuses = (statusMap) => {
   }
 };
 
+const loadRemoteAdminState = async () => {
+  try {
+    const response = await fetch(ADMIN_SYNC_ENDPOINT, { method: 'GET' });
+    if (!response.ok) return null;
+
+    const payload = await response.json();
+    if (!payload || typeof payload !== 'object') return null;
+    return payload;
+  } catch {
+    return null;
+  }
+};
+
+const saveRemoteAdminState = async () => {
+  const payload = {
+    statuses: toolStatusState,
+    layout: loadAdminLayout()
+  };
+
+  try {
+    await fetch(ADMIN_SYNC_ENDPOINT, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch {
+    // Ignore remote sync errors and preserve local behavior.
+  }
+};
+
 const loadAdminLayout = () => {
   try {
     const raw = localStorage.getItem(ADMIN_LAYOUT_STORAGE_KEY);
@@ -202,6 +233,7 @@ const persistAdminLayout = () => {
   });
 
   saveAdminLayout(layoutState);
+  void saveRemoteAdminState();
 };
 
 const handleGridDragOver = (event) => {
@@ -295,8 +327,34 @@ function handleAdminTileClick(event) {
   const storageKey = tile.dataset.toolId || String(tileIndex);
   toolStatusState[storageKey] = next;
   saveAdminStatuses(toolStatusState);
+  void saveRemoteAdminState();
   if (statusFilterSelect) statusFilterSelect.dispatchEvent(new Event('change'));
 }
+
+const initializeRemoteAdminState = async () => {
+  const remoteState = await loadRemoteAdminState();
+  if (!remoteState) return;
+
+  if (remoteState.statuses && typeof remoteState.statuses === 'object') {
+    Object.assign(toolStatusState, remoteState.statuses);
+    saveAdminStatuses(toolStatusState);
+  }
+
+  if (remoteState.layout && typeof remoteState.layout === 'object') {
+    saveAdminLayout(remoteState.layout);
+    restoreAdminLayout();
+  }
+
+  allToolTiles.forEach((tile, index) => {
+    const storageKey = tile.dataset.toolId || String(index);
+    const savedStatus = toolStatusState[storageKey];
+    if (adminStatuses.includes(savedStatus)) {
+      applyAdminStatus(tile, savedStatus);
+    }
+  });
+
+  if (statusFilterSelect) statusFilterSelect.dispatchEvent(new Event('change'));
+};
 
 if (adminToggleBtn) {
   adminToggleBtn.addEventListener('click', () => {
@@ -313,3 +371,5 @@ if (adminToggleBtn) {
     }
   });
 }
+
+void initializeRemoteAdminState();

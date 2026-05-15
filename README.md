@@ -10,6 +10,7 @@ Roman's Toolbox is a lightweight static website that serves as a launch pad for 
 - **Entertainment** section for fun side projects.
 - **Night/Day mode toggle** for quick theme switching.
 - **Section expand/collapse controls** with state persistence using `localStorage`.
+- **Admin status/layout sync** persisted through a Netlify Function so edits appear on other devices.
 
 ## Project structure
 
@@ -17,7 +18,10 @@ Roman's Toolbox is a lightweight static website that serves as a launch pad for 
 .
 ├── index.html   # Page content and tool listings
 ├── styles.css   # Layout, theming, responsive styling
-├── script.js    # Theme toggle + collapsible section behavior
+├── script.js    # Theme toggle + collapsible section behavior + admin editing/sync
+├── netlify/
+│   └── functions/
+│       └── admin-state.js # Shared admin state persistence via Netlify Blobs
 └── README.md
 ```
 
@@ -40,6 +44,10 @@ Then visit: <http://localhost:8080>
 ## Deployment
 
 This project can be deployed to any static host (for example Netlify, GitHub Pages, or Cloudflare Pages).
+
+### Netlify shared admin state
+
+To sync admin card changes across devices, deploy on Netlify with Functions enabled. The endpoint `/.netlify/functions/admin-state` stores shared admin status/layout in Netlify Blobs.
 
 ## Notes
 
