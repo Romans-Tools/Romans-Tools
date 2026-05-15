@@ -89,6 +89,7 @@ if (statusFilterSelect && allToolTiles.length) {
 
 const adminToggleBtn = document.getElementById('admin-toggle');
 const ADMIN_CODE = '205483';
+const ADMIN_STATUS_STORAGE_KEY = 'roman-toolbox-admin-statuses';
 let adminEnabled = false;
 
 const adminStatuses = ['none', 'beta', 'wip', 'deprecated'];
@@ -113,6 +114,36 @@ const applyAdminStatus = (tile, status) => {
     tile.classList.add('status-ribbon');
   }
 };
+
+const loadAdminStatuses = () => {
+  try {
+    const raw = localStorage.getItem(ADMIN_STATUS_STORAGE_KEY);
+    if (!raw) return {};
+
+    const parsed = JSON.parse(raw);
+    return typeof parsed === 'object' && parsed !== null ? parsed : {};
+  } catch {
+    return {};
+  }
+};
+
+const saveAdminStatuses = (statusMap) => {
+  try {
+    localStorage.setItem(ADMIN_STATUS_STORAGE_KEY, JSON.stringify(statusMap));
+  } catch {
+    // Ignore storage write errors to avoid interrupting admin edits.
+  }
+};
+
+const toolStatusState = loadAdminStatuses();
+
+allToolTiles.forEach((tile, index) => {
+  const storageKey = tile.dataset.toolId || String(index);
+  const savedStatus = toolStatusState[storageKey];
+  if (adminStatuses.includes(savedStatus)) {
+    applyAdminStatus(tile, savedStatus);
+  }
+});
 
 const enableAdminMode = () => {
   adminEnabled = true;
@@ -146,6 +177,10 @@ function handleAdminTileClick(event) {
   const next = adminStatuses[(index + 1) % adminStatuses.length];
 
   applyAdminStatus(tile, next);
+  const tileIndex = Array.from(allToolTiles).indexOf(tile);
+  const storageKey = tile.dataset.toolId || String(tileIndex);
+  toolStatusState[storageKey] = next;
+  saveAdminStatuses(toolStatusState);
   if (statusFilterSelect) statusFilterSelect.dispatchEvent(new Event('change'));
 }
 
