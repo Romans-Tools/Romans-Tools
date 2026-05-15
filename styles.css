@@ -188,6 +188,11 @@ h2, h3 { margin-top: 0; }
   background: var(--blue-600);
 }
 
+.status-ribbon-deprecated::after {
+  content: "Deprecated";
+  background: #000;
+}
+
 .tool-tile p {
   margin: .45rem 0 .75rem;
   color: var(--muted);
