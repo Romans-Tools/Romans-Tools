@@ -68,6 +68,14 @@ body {
   border-color: rgba(255, 255, 255, 0.35);
 }
 
+
+.header-actions {
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+  align-items: stretch;
+}
+
 h1 {
   margin: 0;
   font-size: clamp(1.9rem, 3.3vw, 2.6rem);
@@ -254,6 +262,11 @@ h2, h3 { margin-top: 0; }
   background: #2e7d32;
 }
 
+.status-ribbon-silly::after {
+  content: "Silly";
+  background: #5d2a7a;
+}
+
 .tool-tile p {
   margin: .45rem 0 .75rem;
   color: var(--muted);
@@ -310,3 +323,5 @@ h2, h3 { margin-top: 0; }
     text-align: center;
   }
 }
+
+.admin-editable { cursor: pointer; }

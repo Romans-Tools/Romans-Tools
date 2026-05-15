@@ -85,3 +85,82 @@ if (statusFilterSelect && allToolTiles.length) {
   statusFilterSelect.addEventListener('change', applyStatusFilter);
   applyStatusFilter();
 }
+
+
+const adminToggleBtn = document.getElementById('admin-toggle');
+const ADMIN_CODE = '205483';
+let adminEnabled = false;
+
+const adminStatuses = ['none', 'beta', 'wip', 'deprecated'];
+const statusClassList = [
+  'status-ribbon-beta',
+  'status-ribbon-wip',
+  'status-ribbon-deprecated'
+];
+
+const applyAdminStatus = (tile, status) => {
+  tile.dataset.status = status;
+
+  tile.classList.remove(...statusClassList);
+
+  if (status === 'beta') tile.classList.add('status-ribbon-beta');
+  if (status === 'wip') tile.classList.add('status-ribbon-wip');
+  if (status === 'deprecated') tile.classList.add('status-ribbon-deprecated');
+
+  if (status === 'none') {
+    tile.classList.remove('status-ribbon');
+  } else {
+    tile.classList.add('status-ribbon');
+  }
+};
+
+const enableAdminMode = () => {
+  adminEnabled = true;
+  if (adminToggleBtn) adminToggleBtn.setAttribute('aria-pressed', 'true');
+
+  allToolTiles.forEach((tile) => {
+    tile.classList.add('admin-editable');
+    tile.addEventListener('click', handleAdminTileClick);
+  });
+
+  window.alert('Admin mode enabled. Click cards to cycle status: none → beta → wip → deprecated.');
+};
+
+const disableAdminMode = () => {
+  adminEnabled = false;
+  if (adminToggleBtn) adminToggleBtn.setAttribute('aria-pressed', 'false');
+
+  allToolTiles.forEach((tile) => {
+    tile.classList.remove('admin-editable');
+    tile.removeEventListener('click', handleAdminTileClick);
+  });
+};
+
+function handleAdminTileClick(event) {
+  event.preventDefault();
+  event.stopPropagation();
+
+  const tile = event.currentTarget;
+  const current = tile.dataset.status || 'none';
+  const index = adminStatuses.indexOf(current);
+  const next = adminStatuses[(index + 1) % adminStatuses.length];
+
+  applyAdminStatus(tile, next);
+  if (statusFilterSelect) statusFilterSelect.dispatchEvent(new Event('change'));
+}
+
+if (adminToggleBtn) {
+  adminToggleBtn.addEventListener('click', () => {
+    if (adminEnabled) {
+      disableAdminMode();
+      return;
+    }
+
+    const enteredCode = window.prompt('Enter admin code to edit card statuses:');
+    if (enteredCode === ADMIN_CODE) {
+      enableAdminMode();
+    } else if (enteredCode !== null) {
+      window.alert('Incorrect code.');
+    }
+  });
+}
