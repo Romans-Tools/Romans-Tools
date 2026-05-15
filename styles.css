@@ -95,6 +95,20 @@ main.container {
 
 h2, h3 { margin-top: 0; }
 
+.overview-follow-box {
+  margin-top: 1rem;
+  padding: .8rem .95rem;
+  border-left: 4px solid var(--blue-600);
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--blue-600) 10%, var(--card) 90%);
+}
+
+.overview-follow-box a {
+  color: var(--blue-600);
+  font-weight: 700;
+}
+
 .card-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(260px, 1fr));
