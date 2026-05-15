@@ -49,11 +49,12 @@ sectionButtons.forEach((button) => {
   if (!target) return;
 
   const savedExpanded = sectionState[targetId];
-  if (typeof savedExpanded === 'boolean') {
-    button.setAttribute('aria-expanded', String(savedExpanded));
-    button.textContent = savedExpanded ? 'Collapse' : 'Expand';
-    target.hidden = !savedExpanded;
-  }
+  const isExpandedByDefault = true;
+  const initialExpanded = typeof savedExpanded === 'boolean' ? savedExpanded : isExpandedByDefault;
+
+  button.setAttribute('aria-expanded', String(initialExpanded));
+  button.textContent = initialExpanded ? 'Collapse' : 'Expand';
+  target.hidden = !initialExpanded;
 
   button.addEventListener('click', () => {
     const expanded = button.getAttribute('aria-expanded') === 'true';
