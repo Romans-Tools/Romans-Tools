@@ -213,11 +213,24 @@ h2, h3 { margin-top: 0; }
 .status-ribbon-wip-beta::after {
   content: "Beta";
   background: var(--blue-600);
+  right: -2.2rem;
+  bottom: 2.05rem;
+  left: auto;
+  transform: rotate(-35deg);
 }
 
 .status-ribbon-wip-beta::before {
   content: "WIP";
   background: #c62828;
+  right: -2.2rem;
+  bottom: .7rem;
+  left: auto;
+  transform: rotate(-35deg);
+}
+
+.status-ribbon-bunge::after {
+  content: "Bunge";
+  background: #2e7d32;
 }
 
 .tool-tile p {
