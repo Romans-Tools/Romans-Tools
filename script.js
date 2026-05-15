@@ -91,7 +91,6 @@ sectionButtons.forEach((button) => {
   });
 });
 
-const statusFilterSelect = document.getElementById('status-filter-select');
 const sectionFilterSelect = document.getElementById('section-filter-select');
 const allToolTiles = document.querySelectorAll('.tool-grid .tool-tile');
 
@@ -107,20 +106,13 @@ if (allToolTiles.length) {
 
   const applyFilters = () => {
     const selectedSection = sectionFilterSelect ? sectionFilterSelect.value : 'all';
-    const selectedStatus = statusFilterSelect.value;
 
     allToolTiles.forEach((tool) => {
-      const toolStatus = tool.dataset.status || 'none';
       const toolSection = tool.dataset.section || 'all';
-      const statusMatch = selectedStatus === 'all' || toolStatus === selectedStatus;
       const sectionMatch = selectedSection === 'all' || toolSection === selectedSection;
-      tool.hidden = !(statusMatch && sectionMatch);
+      tool.hidden = !sectionMatch;
     });
   };
-
-  if (statusFilterSelect) {
-    statusFilterSelect.addEventListener('change', applyFilters);
-  }
 
   if (sectionFilterSelect) {
     sectionFilterSelect.addEventListener('change', applyFilters);
