@@ -70,21 +70,41 @@ sectionButtons.forEach((button) => {
 });
 
 const statusFilterSelect = document.getElementById('status-filter-select');
+const sectionFilterSelect = document.getElementById('section-filter-select');
 const allToolTiles = document.querySelectorAll('.tool-grid .tool-tile');
 
-if (statusFilterSelect && allToolTiles.length) {
-  const applyStatusFilter = () => {
+if (allToolTiles.length) {
+  allToolTiles.forEach((tool) => {
+    if (tool.dataset.section) return;
+
+    const parentCard = tool.closest('.card[id]');
+    if (parentCard) {
+      tool.dataset.section = parentCard.id;
+    }
+  });
+
+  const applyFilters = () => {
+    const selectedSection = sectionFilterSelect ? sectionFilterSelect.value : 'all';
     const selectedStatus = statusFilterSelect.value;
 
     allToolTiles.forEach((tool) => {
       const toolStatus = tool.dataset.status || 'none';
-      const shouldShow = selectedStatus === 'all' || toolStatus === selectedStatus;
-      tool.hidden = !shouldShow;
+      const toolSection = tool.dataset.section || 'all';
+      const statusMatch = selectedStatus === 'all' || toolStatus === selectedStatus;
+      const sectionMatch = selectedSection === 'all' || toolSection === selectedSection;
+      tool.hidden = !(statusMatch && sectionMatch);
     });
   };
 
-  statusFilterSelect.addEventListener('change', applyStatusFilter);
-  applyStatusFilter();
+  if (statusFilterSelect) {
+    statusFilterSelect.addEventListener('change', applyFilters);
+  }
+
+  if (sectionFilterSelect) {
+    sectionFilterSelect.addEventListener('change', applyFilters);
+  }
+
+  applyFilters();
 }
 
 
