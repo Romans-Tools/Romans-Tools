@@ -89,14 +89,31 @@ if (statusFilterSelect && allToolTiles.length) {
 
 const adminToggleBtn = document.getElementById('admin-toggle');
 const ADMIN_CODE = '205483';
+const ADMIN_STATUS_STORAGE_KEY = 'roman-toolbox-admin-statuses';
+const ADMIN_LAYOUT_STORAGE_KEY = 'roman-toolbox-admin-layout';
 let adminEnabled = false;
+let draggedTile = null;
+let suppressAdminClickUntil = 0;
 
-const adminStatuses = ['none', 'beta', 'wip', 'deprecated'];
+const adminStatuses = ['none', 'beta', 'wip', 'deprecated', 'silly'];
 const statusClassList = [
   'status-ribbon-beta',
   'status-ribbon-wip',
-  'status-ribbon-deprecated'
+  'status-ribbon-deprecated',
+  'status-ribbon-silly'
 ];
+const allToolGrids = document.querySelectorAll('.tool-grid');
+
+const slugify = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+const ensureTileIds = () => {
+  allToolTiles.forEach((tile, index) => {
+    if (!tile.dataset.toolId) {
+      const title = tile.querySelector('h3')?.textContent?.trim();
+      tile.dataset.toolId = title ? slugify(title) : `tool-${index + 1}`;
+    }
+  });
+};
 
 const applyAdminStatus = (tile, status) => {
   tile.dataset.status = status;
@@ -106,6 +123,7 @@ const applyAdminStatus = (tile, status) => {
   if (status === 'beta') tile.classList.add('status-ribbon-beta');
   if (status === 'wip') tile.classList.add('status-ribbon-wip');
   if (status === 'deprecated') tile.classList.add('status-ribbon-deprecated');
+  if (status === 'silly') tile.classList.add('status-ribbon-silly');
 
   if (status === 'none') {
     tile.classList.remove('status-ribbon');
@@ -114,16 +132,122 @@ const applyAdminStatus = (tile, status) => {
   }
 };
 
+const loadAdminStatuses = () => {
+  try {
+    const raw = localStorage.getItem(ADMIN_STATUS_STORAGE_KEY);
+    if (!raw) return {};
+
+    const parsed = JSON.parse(raw);
+    return typeof parsed === 'object' && parsed !== null ? parsed : {};
+  } catch {
+    return {};
+  }
+};
+
+const saveAdminStatuses = (statusMap) => {
+  try {
+    localStorage.setItem(ADMIN_STATUS_STORAGE_KEY, JSON.stringify(statusMap));
+  } catch {
+    // Ignore storage write errors to avoid interrupting admin edits.
+  }
+};
+
+const loadAdminLayout = () => {
+  try {
+    const raw = localStorage.getItem(ADMIN_LAYOUT_STORAGE_KEY);
+    if (!raw) return {};
+
+    const parsed = JSON.parse(raw);
+    return typeof parsed === 'object' && parsed !== null ? parsed : {};
+  } catch {
+    return {};
+  }
+};
+
+const saveAdminLayout = (layoutState) => {
+  try {
+    localStorage.setItem(ADMIN_LAYOUT_STORAGE_KEY, JSON.stringify(layoutState));
+  } catch {
+    // Ignore storage write errors to avoid interrupting admin edits.
+  }
+};
+
+const restoreAdminLayout = () => {
+  const layoutState = loadAdminLayout();
+  const sectionIds = Object.keys(layoutState);
+
+  sectionIds.forEach((sectionId) => {
+    const grid = document.querySelector(`#${sectionId} .tool-grid`);
+    const tileIds = layoutState[sectionId];
+    if (!grid || !Array.isArray(tileIds)) return;
+
+    tileIds.forEach((tileId) => {
+      const tile = document.querySelector(`.tool-tile[data-tool-id="${tileId}"]`);
+      if (tile) grid.appendChild(tile);
+    });
+  });
+};
+
+const persistAdminLayout = () => {
+  const layoutState = {};
+
+  document.querySelectorAll('.card[id]').forEach((card) => {
+    const grid = card.querySelector('.tool-grid');
+    if (!grid) return;
+
+    const tileIds = Array.from(grid.querySelectorAll('.tool-tile'))
+      .map((tile) => tile.dataset.toolId)
+      .filter(Boolean);
+    layoutState[card.id] = tileIds;
+  });
+
+  saveAdminLayout(layoutState);
+};
+
+const handleGridDragOver = (event) => {
+  if (!adminEnabled || !draggedTile) return;
+  event.preventDefault();
+};
+
+const handleGridDrop = (event) => {
+  if (!adminEnabled || !draggedTile) return;
+  event.preventDefault();
+
+  const grid = event.currentTarget;
+  grid.appendChild(draggedTile);
+  persistAdminLayout();
+};
+
+const toolStatusState = loadAdminStatuses();
+ensureTileIds();
+restoreAdminLayout();
+
+allToolTiles.forEach((tile, index) => {
+  const storageKey = tile.dataset.toolId || String(index);
+  const savedStatus = toolStatusState[storageKey];
+  if (adminStatuses.includes(savedStatus)) {
+    applyAdminStatus(tile, savedStatus);
+  }
+});
+
 const enableAdminMode = () => {
   adminEnabled = true;
   if (adminToggleBtn) adminToggleBtn.setAttribute('aria-pressed', 'true');
 
   allToolTiles.forEach((tile) => {
     tile.classList.add('admin-editable');
+    tile.setAttribute('draggable', 'true');
     tile.addEventListener('click', handleAdminTileClick);
+    tile.addEventListener('dragstart', handleTileDragStart);
+    tile.addEventListener('dragend', handleTileDragEnd);
+  });
+  allToolGrids.forEach((grid) => {
+    grid.classList.add('admin-dropzone');
+    grid.addEventListener('dragover', handleGridDragOver);
+    grid.addEventListener('drop', handleGridDrop);
   });
 
-  window.alert('Admin mode enabled. Click cards to cycle status: none → beta → wip → deprecated.');
+  window.alert('Admin mode enabled. Click cards to cycle status: none → beta → wip → deprecated → silly.');
 };
 
 const disableAdminMode = () => {
@@ -132,11 +256,32 @@ const disableAdminMode = () => {
 
   allToolTiles.forEach((tile) => {
     tile.classList.remove('admin-editable');
+    tile.removeAttribute('draggable');
     tile.removeEventListener('click', handleAdminTileClick);
+    tile.removeEventListener('dragstart', handleTileDragStart);
+    tile.removeEventListener('dragend', handleTileDragEnd);
+  });
+  allToolGrids.forEach((grid) => {
+    grid.classList.remove('admin-dropzone');
+    grid.removeEventListener('dragover', handleGridDragOver);
+    grid.removeEventListener('drop', handleGridDrop);
   });
 };
 
+function handleTileDragStart(event) {
+  draggedTile = event.currentTarget;
+  event.dataTransfer.effectAllowed = 'move';
+  event.currentTarget.classList.add('is-dragging');
+}
+
+function handleTileDragEnd(event) {
+  event.currentTarget.classList.remove('is-dragging');
+  draggedTile = null;
+  suppressAdminClickUntil = Date.now() + 200;
+}
+
 function handleAdminTileClick(event) {
+  if (Date.now() < suppressAdminClickUntil) return;
   event.preventDefault();
   event.stopPropagation();
 
@@ -146,6 +291,10 @@ function handleAdminTileClick(event) {
   const next = adminStatuses[(index + 1) % adminStatuses.length];
 
   applyAdminStatus(tile, next);
+  const tileIndex = Array.from(allToolTiles).indexOf(tile);
+  const storageKey = tile.dataset.toolId || String(tileIndex);
+  toolStatusState[storageKey] = next;
+  saveAdminStatuses(toolStatusState);
   if (statusFilterSelect) statusFilterSelect.dispatchEvent(new Event('change'));
 }
 
