@@ -213,11 +213,27 @@ h2, h3 { margin-top: 0; }
 .status-ribbon-wip-beta::after {
   content: "Beta";
   background: var(--blue-600);
+  right: .55rem;
+  left: auto;
+  top: .45rem;
+  bottom: auto;
+  width: auto;
+  min-width: 4.4rem;
+  padding: .2rem .55rem;
+  transform: none;
 }
 
 .status-ribbon-wip-beta::before {
   content: "WIP";
   background: #c62828;
+  right: .55rem;
+  left: auto;
+  top: 2rem;
+  bottom: auto;
+  width: auto;
+  min-width: 4.4rem;
+  padding: .2rem .55rem;
+  transform: none;
 }
 
 .tool-tile p {
