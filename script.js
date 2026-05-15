@@ -92,11 +92,12 @@ const ADMIN_CODE = '205483';
 const ADMIN_STATUS_STORAGE_KEY = 'roman-toolbox-admin-statuses';
 let adminEnabled = false;
 
-const adminStatuses = ['none', 'beta', 'wip', 'deprecated'];
+const adminStatuses = ['none', 'beta', 'wip', 'deprecated', 'silly'];
 const statusClassList = [
   'status-ribbon-beta',
   'status-ribbon-wip',
-  'status-ribbon-deprecated'
+  'status-ribbon-deprecated',
+  'status-ribbon-silly'
 ];
 
 const applyAdminStatus = (tile, status) => {
@@ -107,6 +108,7 @@ const applyAdminStatus = (tile, status) => {
   if (status === 'beta') tile.classList.add('status-ribbon-beta');
   if (status === 'wip') tile.classList.add('status-ribbon-wip');
   if (status === 'deprecated') tile.classList.add('status-ribbon-deprecated');
+  if (status === 'silly') tile.classList.add('status-ribbon-silly');
 
   if (status === 'none') {
     tile.classList.remove('status-ribbon');
@@ -154,7 +156,7 @@ const enableAdminMode = () => {
     tile.addEventListener('click', handleAdminTileClick);
   });
 
-  window.alert('Admin mode enabled. Click cards to cycle status: none → beta → wip → deprecated.');
+  window.alert('Admin mode enabled. Click cards to cycle status: none → beta → wip → deprecated → silly.');
 };
 
 const disableAdminMode = () => {
