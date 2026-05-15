@@ -7,7 +7,7 @@ Roman's Toolbox is a lightweight static website that serves as a single launch p
 - A responsive directory of tool links grouped by category.
 - Night/Day theme toggle with saved preference in `localStorage`.
 - Expand/collapse controls for each section with saved state.
-- Tool filtering by both status and section.
+- Tool filtering by section.
 
 ## Project structure
 
