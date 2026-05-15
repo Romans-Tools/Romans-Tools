@@ -138,6 +138,7 @@ h2, h3 { margin-top: 0; }
   display: none;
 }
 
+#supporting,
 #entertainment {
   grid-column: 1 / -1;
 }
