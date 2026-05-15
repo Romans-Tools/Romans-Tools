@@ -69,13 +69,13 @@ sectionButtons.forEach((button) => {
 });
 
 const statusFilterSelect = document.getElementById('status-filter-select');
-const inDevelopmentTools = document.querySelectorAll('#in-development-tools .tool-tile');
+const allToolTiles = document.querySelectorAll('.tool-grid .tool-tile');
 
-if (statusFilterSelect && inDevelopmentTools.length) {
+if (statusFilterSelect && allToolTiles.length) {
   const applyStatusFilter = () => {
     const selectedStatus = statusFilterSelect.value;
 
-    inDevelopmentTools.forEach((tool) => {
+    allToolTiles.forEach((tool) => {
       const toolStatus = tool.dataset.status || 'none';
       const shouldShow = selectedStatus === 'all' || toolStatus === selectedStatus;
       tool.hidden = !shouldShow;
