@@ -147,8 +147,18 @@
             </div>
             <div id="in-development-content" class="toggle-content" hidden>
               <p>These tools are actively being built, tested, or refined before wider release, so features and behavior may change as improvements are made.</p>
-              <div class="tool-grid">
-              <section class="tool-tile status-ribbon status-ribbon-beta">
+              <div class="status-filter" role="group" aria-label="Filter tools by development status">
+                <label for="status-filter-select">Filter by status</label>
+                <select id="status-filter-select">
+                  <option value="all">All statuses</option>
+                  <option value="none">Fully developed (No Banner)</option>
+                  <option value="deprecated">No Longer doing updates (Deprecated)</option>
+                  <option value="beta">Unofficial tools (BETA)</option>
+                  <option value="wip">Work in Progress (WIP)</option>
+                </select>
+              </div>
+              <div class="tool-grid" id="in-development-tools">
+              <section class="tool-tile status-ribbon status-ribbon-beta" data-status="beta">
                 <h3>CAP Certificate Generator</h3>
                 <p>Generate Civil Air Patrol certificates quickly with a streamlined guided form. This is a working concept and not fully released to membership just yet.</p>
                 <a
@@ -162,7 +172,7 @@
                 </a>
               </section>
 
-              <section class="tool-tile status-ribbon status-ribbon-bunge">
+              <section class="tool-tile status-ribbon status-ribbon-bunge" data-status="none">
                 <h3>Readiness Hub</h3>
                 <p>Centralized readiness resources and tools to support planning, tracking, and operational preparation.</p>
                 <a
@@ -176,7 +186,7 @@
                 </a>
               </section>
 
-              <section class="tool-tile status-ribbon status-ribbon-wip">
+              <section class="tool-tile status-ribbon status-ribbon-wip" data-status="wip">
                 <h3>Ribbon Check</h3>
                 <p>Review CAP uniform guidance quickly with a simple, dedicated reference tool.</p>
                 <a
@@ -191,7 +201,7 @@
               </section>
 
 
-              <section class="tool-tile status-ribbon status-ribbon-wip">
+              <section class="tool-tile status-ribbon status-ribbon-wip" data-status="wip">
                 <h3>CAP Photo Meta Data Writer</h3>
                 <p>Write and manage metadata for CAP photos to support consistent archiving, attribution, and publication workflows.</p>
                 <a
@@ -206,7 +216,7 @@
               </section>
 
 
-              <section class="tool-tile status-ribbon status-ribbon-wip">
+              <section class="tool-tile status-ribbon status-ribbon-wip" data-status="wip">
                 <h3>Bulk File Renamer</h3>
                 <p>Batch rename files quickly with configurable patterns for consistent naming across large folders.</p>
                 <a
@@ -220,7 +230,7 @@
                 </a>
               </section>
 
-              <section class="tool-tile status-ribbon status-ribbon-wip-beta">
+              <section class="tool-tile status-ribbon status-ribbon-wip" data-status="wip">
                 <h3>CAP Emblem Generator</h3>
                 <p>Create and customize CAP emblem graphics with an in-browser toolset while feature work is still underway.</p>
                 <a
@@ -234,7 +244,7 @@
                 </a>
               </section>
 
-              <section class="tool-tile status-ribbon status-ribbon-wip">
+              <section class="tool-tile status-ribbon status-ribbon-wip" data-status="wip">
                 <h3>Organizational Chart Generator</h3>
                 <p>Build and customize CAP-style organizational charts quickly for briefings, planning, and team structure visualization.</p>
                 <a
