@@ -178,6 +178,23 @@ h2, h3 { margin-top: 0; }
   pointer-events: none;
 }
 
+.status-ribbon::before {
+  position: absolute;
+  left: -2.2rem;
+  bottom: .7rem;
+  width: 8.2rem;
+  color: #fff;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: .22rem 0;
+  transform: rotate(35deg);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.24);
+  pointer-events: none;
+}
+
 .status-ribbon-wip::after {
   content: "WIP";
   background: #c62828;
@@ -191,6 +208,16 @@ h2, h3 { margin-top: 0; }
 .status-ribbon-deprecated::after {
   content: "Deprecated";
   background: #000;
+}
+
+.status-ribbon-wip-beta::after {
+  content: "Beta";
+  background: var(--blue-600);
+}
+
+.status-ribbon-wip-beta::before {
+  content: "WIP";
+  background: #c62828;
 }
 
 .tool-tile p {
