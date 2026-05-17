@@ -29,11 +29,11 @@ Production-ready tools that are actively used for practical workflows.
 
 Tools currently being built, tested, and refined. Features and behavior may change.
 
-- **CAP Certificate Generator** *(BETA)* - Guided certificate creation workflow, currently in concept/preview stage.
-- **Ribbon Check** *(BETA)* - Quick reference utility for CAP uniform and ribbon guidance.
-- **CAP Photo Meta Data Writer** *(BETA)* - Metadata editing for consistent photo archiving and publication.
-- **Bulk File Renamer** *(BETA)* - Pattern-based batch file renaming for folder-wide naming consistency.
-- **CAP Emblem Generator** *(BETA)* - Browser-based emblem design and customization tool.
+- **CAP Certificate Generator** *(WIP)* - Guided certificate creation workflow, currently in concept/preview stage.
+- **Ribbon Check** *(WIP)* - Quick reference utility for CAP uniform and ribbon guidance.
+- **CAP Photo Meta Data Writer** *(WIP)* - Metadata editing for consistent photo archiving and publication.
+- **Bulk File Renamer** *(WIP)* - Pattern-based batch file renaming for folder-wide naming consistency.
+- **CAP Emblem Generator** *(WIP)* - Browser-based emblem design and customization tool.
 - **Organizational Chart Generator** *(BETA)* - Rapid CAP-style org chart creation for planning and briefings.
 
 ### Supporting
