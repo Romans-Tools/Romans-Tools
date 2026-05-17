@@ -226,7 +226,7 @@ h2, h3 { margin-top: 0; }
 }
 
 .status-ribbon-wip::after {
-  content: "WIP";
+  content: "BETA";
   background: #c62828;
 }
 
@@ -250,7 +250,7 @@ h2, h3 { margin-top: 0; }
 }
 
 .status-ribbon-wip-beta::before {
-  content: "WIP";
+  content: "BETA";
   background: #c62828;
   right: -2.2rem;
   bottom: .7rem;
