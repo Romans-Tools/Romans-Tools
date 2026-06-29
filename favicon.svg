@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Roman's Toolbox">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#163ea8"/>
+      <stop offset="1" stop-color="#0b1f52"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <!-- Toolbox -->
+  <g fill="none" stroke="#ffffff" stroke-width="26" stroke-linejoin="round" stroke-linecap="round">
+    <!-- handle -->
+    <path d="M196 168 v-22 a24 24 0 0 1 24 -24 h72 a24 24 0 0 1 24 24 v22"/>
+    <!-- box body -->
+    <rect x="120" y="168" width="272" height="200" rx="22"/>
+    <!-- lid divider line -->
+    <path d="M120 232 h272"/>
+    <!-- latch -->
+    <path d="M236 168 h40 v40 h-40 z" fill="#4d7dff" stroke="#4d7dff"/>
+  </g>
+</svg>
