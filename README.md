@@ -24,6 +24,10 @@ Production-ready tools that are actively used for practical workflows.
 - **Aviation Weather Decoder** - Converts aviation weather reports into plain-language summaries.
 - **Training Scenario Builder** - Creates guided training scenarios for planning, facilitation, and review.
 - **CAP Brand Tools** - Provides Civil Air Patrol branding and identity support resources.
+- **Mobile Command Post Equipment Management System** - Manages mobile command post equipment inventories, assignments, and readiness tracking.
+- **O-Flight Dispatch** - Coordinates orientation flight dispatch workflows and operational details.
+- **sUAS Mission Manager** - Plans and manages small UAS mission information, assignments, and tracking.
+- **Operations Control Center** - Centralizes operational status visibility and coordination support.
 
 ### In Development
 
